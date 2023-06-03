@@ -1,0 +1,5 @@
+venv/
+build/
+dist/
+run_afl_injury_scraper.*
+keys.*
