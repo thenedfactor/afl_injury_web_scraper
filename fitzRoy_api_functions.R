@@ -62,7 +62,6 @@ get_fryzigg_player_stats_snapshot <- function(
     odbcClose(conn)
 }
 
-print(get_keys()$host)
 get_fryzigg_player_stats_snapshot(
     "afl_player_statistics",
     get_keys(),
@@ -70,3 +69,4 @@ get_fryzigg_player_stats_snapshot(
     2021,
     2023
 )
+
