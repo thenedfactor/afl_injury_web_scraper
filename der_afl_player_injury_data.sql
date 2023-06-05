@@ -28,6 +28,7 @@ WITH injuries AS (
 		  ,LAG([updated_date], 1) OVER (PARTITION BY [player], [injury] ORDER BY [upload_timestamp] ASC) lag_updated_date
 		  ,LEAD([updated_date], 1) OVER (PARTITION BY [player], [injury] ORDER BY [upload_timestamp] ASC) lead_updated_date
 	FROM [dbo].[afl_player_injuries]
+	WHERE [injury] != 'Suspension'
 )
 , flag_cte AS (
 	SELECT

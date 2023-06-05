@@ -3,17 +3,6 @@ library(fitzRoy)
 library(RODBC)
 library(yaml)
 
-conn <- odbcDriverConnect(connection = "Driver={ODBC Driver 17 for SQL Server};Server=localhost;Database=master;Trusted_Connection=yes")
-df <- fetch_fixture_afl(season = 2023, comp = "AFLM")
-
-player_stats_df <- fetch_player_stats(season = 2023, source = "fryzigg")
-player_details_df <- fetch_player_details(team = "Carlton", current = TRUE, source = "AFL")
-
-print(summary(player_details_df))
-print(player_stats_df)
-
-odbcClose(conn)
-
 get_keys <- function() {
 
     current_directory <- getwd()

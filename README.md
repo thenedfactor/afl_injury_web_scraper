@@ -15,3 +15,8 @@ The resulting dataset can then be used to enrich game-by-game data to determine 
 - Compare injury data to match data to create a dataset containing injury time, type and duration for specific players (SQL).
 - Explore the results using visualisation tools (TBC).
 - Run ML algorithms on the data to find patterns (Python).
+
+The way this codebase is set up currently, the injury data must be accumulated over time as only the current version of the AFL injury website is used. Accessing previous versions of the page is yet to be attempted.
+
+## Ackowledgements
+- fitzRoy API (jimmyday12) https://github.com/jimmyday12/fitzRoy - source of match data and player statistics
