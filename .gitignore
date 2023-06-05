@@ -1,6 +1,7 @@
 venv/
 build/
 dist/
-run_afl_injury_web_scraper.spec
-run_afl_injury_web_scraper.exe
+*.spec
+*.exe
 keys.*
+*.bat
