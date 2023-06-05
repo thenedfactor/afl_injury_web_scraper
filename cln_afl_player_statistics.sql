@@ -18,6 +18,7 @@ CREATE TABLE [dbo].[cln_afl_player_statistics]
       ,[player_first_name] VARCHAR(255)
       ,[player_last_name] VARCHAR(255)
 	  ,[player_full_name] VARCHAR(255)
+	  ,[player_team] VARCHAR(255)
       ,[player_height_cm] INT
       ,[player_weight_kg] INT
       ,[kicks] INT
@@ -89,6 +90,7 @@ INSERT INTO [dbo].[cln_afl_player_statistics]
       ,[player_first_name]
       ,[player_last_name]
 	  ,CONCAT([player_first_name], ' ', [player_last_name]) player_full_name
+	  ,[player_team]
       ,CAST([player_height_cm] AS INT)
       ,CAST([player_weight_kg] AS INT) 
       ,CAST([kicks] AS INT) 
