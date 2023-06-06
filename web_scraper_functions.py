@@ -7,6 +7,24 @@ from sqlalchemy import create_engine, String, Date, TIMESTAMP, DateTime
 import pyodbc
 from datetime import datetime, timezone
 
+HISTORIC_LINK_LIBRARY = [
+    "https://web.archive.org/web/20230320063633/https://www.afl.com.au/matches/injury-list",
+    "https://web.archive.org/web/20230323060407/https://www.afl.com.au/matches/injury-list",
+    "https://web.archive.org/web/20230327032147/https://www.afl.com.au/matches/injury-list",
+    "https://web.archive.org/web/20230330003455/https://www.afl.com.au/matches/injury-list",
+    "https://web.archive.org/web/20230403093955/https://www.afl.com.au/matches/injury-list",
+    "https://web.archive.org/web/20230405025234/https://www.afl.com.au/matches/injury-list",
+    "https://web.archive.org/web/20230411192845/https://www.afl.com.au/matches/injury-list",
+    "https://web.archive.org/web/20230414192148/https://www.afl.com.au/matches/injury-list",
+    "https://web.archive.org/web/20230418185115/https://www.afl.com.au/matches/injury-list",
+    "https://web.archive.org/web/20230421190223/https://www.afl.com.au/matches/injury-list",
+    "https://web.archive.org/web/20230423094554/https://www.afl.com.au/matches/injury-list",
+    "https://web.archive.org/web/20230426201140/https://www.afl.com.au/matches/injury-list",
+    "https://web.archive.org/web/20230502065913/https://www.afl.com.au/matches/injury-list",
+    "https://web.archive.org/web/20230507092706/https://www.afl.com.au/matches/injury-list",
+    "https://web.archive.org/web/20230509202033/https://www.afl.com.au/matches/injury-list"
+]
+
 def get_keys():
 
     folder_path = getcwd()
@@ -24,15 +42,12 @@ def get_keys():
         'db_name': db_name
     }
 
-def get_latest_injuries_df():
+def get_latest_injuries_df(url):
     '''
-    Accesses the current AFL injury list page (URL below), scrapes player injury data from the
+    Accesses the current AFL injury list page (at given URL), scrapes player injury data from the
     HTML response, and stores the data in a Pandas dataframe. Returns the dataframe containing
     player injury information.
     '''
-
-    # URL of the AFL injury list
-    url = "https://www.afl.com.au/matches/injury-list"
 
     # Send a GET request to the URL
     response = requests.get(url)
@@ -86,6 +101,17 @@ def get_latest_injuries_df():
 
     return df
 
+def get_historic_injury_lists(urls: list):
+
+    # Initialise dataframe with data from first URL
+    historic_df = get_latest_injuries_df(urls[0])
+
+    for url in urls[1:]:
+        df = get_latest_injuries_df(url)
+        historic_df = pd.concat([historic_df, df], axis=0)
+
+    return historic_df
+
 def upload_data_to_db(
     df,
     db_host,
@@ -113,16 +139,17 @@ def upload_data_to_db(
     )
 
     return None
+
 if __name__ == '__main__':
 
     keys = get_keys()
-    df = get_latest_injuries_df()
+    df = get_historic_injury_lists(HISTORIC_LINK_LIBRARY)
     print(df.head())
     print(df.info())
     upload_data_to_db(
         df,
         db_host=keys['db_host'],
         db_name=keys['db_name'],
-        table_name='afl_player_injuries',
+        table_name='afl_player_injuries_historic',
         schema='dbo'
     )
